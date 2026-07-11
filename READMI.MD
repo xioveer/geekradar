@@ -12,5 +12,3 @@ Es una aplicación web full-stack interactiva y geolocalizada. Funciona como un 
 * **Frontend:** HTML5, CSS3, JavaScript.
 * **Backend:** Python.
 * **IA:** Modelos de lenguaje para recomendaciones personaliza
-
-ñ
