@@ -1,75 +1,21 @@
-@'
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeekRadar - Guía Inteligente</title>
+    <title>Document</title>
 </head>
 <body>
-
     <header>
         <h1>GeekRadar</h1>
-        <h2>¿A dónde ir a parchar?</h2>
-        <nav>
-            <a href="#inicio">Inicio</a>
-            <a href="#experiencias">Experiencias</a>
-        </nav>
+        <p>Encuentra tu próximo <strong>parche</strong> te la pasaras genial </p>
     </header>
-
     <main>
-        <!-- Sección de Inicio -->
-        <section id="inicio">
-            <h2>Radar Geek</h2>
-            <ul>
-                <li>Guía inteligente y geolocalizadora</li>
-                <li>Recomendaciones personalizadas con IA</li>
-                <li>Conecta restaurantes, centros de entretenimiento y cafés de juegos</li>
-            </ul>
-        </section>
-
-        <!-- Sección de Experiencias / Productos Destacados -->
-        <section id="experiencias">
-            <h2>Lugares Destacados en el Radar</h2>
-            <article>
-                <h3>Zonas Gamer & Arcades</h3>
-                <img src="https://www.mercadolibre.com.co/pc-gamer-rgb-ryzen-7-5700g--32gb--ssd-512gb--monitor-22/up/MCOU2763544819" alt="PC Gamer de última generación en zona arcade">
-                <p>Encuentra los mejores centros temáticos sobre computadores de última generación (procesadores Intel Core i9 y tarjetas gráficas RTX 3080 Ti), ideales para torneos, videojuegos de alta gama y comida brutal.</p>
-            </article>
-        </section>
-
-        <!-- Sección de los 10 Sitios Más Visitados -->
-        <section id="top-sitios">
-            <h2>Top Sitios Más Visitados 🚀</h2>
-            
-            <h3>Zonas Gamer y Arcades</h3>
-            <ol>
-                <li><strong>Pixel Arena Club:</strong> Torneos semanales y PCs con RTX 3080 Ti.</li>
-                <li><strong>Retro Cyber Arcade:</strong> Máquinas clásicas fichines y simuladores de carreras.</li>
-                <li><strong>Nexus E-Sports Center:</strong> Consolas de última generación y pantallas gigantes.</li>
-            </ol>
-
-            <h3>🍔 Restaurantes Temáticos (Para comer y jugar)</h3>
-            <ol start="4">
-                <li><strong>Burgers & Blocks:</strong> Hamburguesas brutales ambientadas en tus videojuegos favoritos.</li>
-                <li><strong>Combo Breaker Pub:</strong> Alitas picantes con estaciones de juego en cada mesa.</li>
-                <li><strong>The Respawn Bistro:</strong> Comida internacional con referencias de anime y cultura geek.</li>
-            </ol>
-
-            <h3>🎲 Cafés de Juegos de Mesa (Planes más tranquilos)</h3>
-            <ol start="7">
-                <li><strong>Dice & Drinks Café:</strong> Más de 100 juegos de mesa y malteadas increíbles.</li>
-                <li><strong>La Mazmorra del Tablero:</strong> Especialistas en juegos de estrategia y rol en vivo.</li>
-                <li><strong>Pixel & Pócimas:</strong> Café de especialidad con zonas de cartas coleccionables.</li>
-                <li><strong>Glitch Coffee:</strong> Cafetería estética con zonas tranquilas para leer manga.</li>
-            </ol>
+        <section>
+            <h2>¿que planes tienes para hoy ?</h2>
+            <input type="text" placeholder="busca tu parche">
+            <button>buscar</button>
         </section>
     </main>
-
-    <footer>
-        <p>Derechos reservados para el más pro &copy; 2026</p>
-    </footer>
-
 </body>
 </html>
-'@ | Out-File -FilePath frontend/index.html -Encoding utf8
