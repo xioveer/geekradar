@@ -1,21 +1,201 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>GeekRadar - Encuentra tu próximo parche</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>GeekRadar</h1>
-        <p>Encuentra tu próximo <strong>parche</strong> te la pasaras genial </p>
-    </header>
-    <main>
-        <section>
-            <h2>¿que planes tienes para hoy ?</h2>
-            <input type="text" placeholder="busca tu parche">
-            <button>buscar</button>
-        </section>
-    </main>
+    <div class="app-layout">
+        <header class="top-nav">
+            <div class="brand">
+                <div class="brand-icon">🎯</div>
+                <div class="brand-text">
+                    <h1>GeekRadar</h1>
+                    <span>Encuentra tu próximo parche</span>
+                </div>
+            </div>
+            
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="¿Qué quieres hacer hoy?">
+            </div>
+
+            <nav class="nav-links">
+                <a href="#" class="nav-item active">🏠 Inicio</a>
+                <a href="#" class="nav-item">🧭 Explorar</a>
+                <a href="#" class="nav-item">📅 Eventos</a>
+                <a href="#" class="nav-item">👥 Comunidad</a>
+                <a href="#" class="nav-item">❤️ Favoritos</a>
+            </nav>
+
+            <div class="user-badge">
+                <div class="avatar">👦</div>
+                <div class="user-info">
+                    <span class="level">Nivel 8</span>
+                    <span class="role">Explorer Geek</span>
+                    <span class="xp">1,250 XP</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <aside class="sidebar-left">
+                <section class="section-box">
+                    <h2 class="section-title">CATEGORÍAS</h2>
+                    <ul class="category-menu">
+                        <li class="cat-item active"><span class="cat-icon">🎮</span> Videojuegos</li>
+                        <li class="cat-item"><span class="cat-icon">🍔</span> Comida</li>
+                        <li class="cat-item"><span class="cat-icon">☕</span> Cafés</li>
+                        <li class="cat-item"><span class="cat-icon">🎲</span> Juegos de mesa</li>
+                        <li class="cat-item"><span class="cat-icon">🎨</span> Arte y cultura</li>
+                        <li class="cat-item"><span class="cat-icon">🎵</span> Música</li>
+                        <li class="cat-item"><span class="cat-icon">🛍️</span> Tiendas geek</li>
+                        <li class="cat-item"><span class="cat-icon">🐱</span> Anime</li>
+                        <li class="cat-item"><span class="cat-icon">📖</span> Libros</li>
+                        <li class="cat-item"><span class="cat-icon">🎟️</span> Eventos</li>
+                    </ul>
+                </section>
+
+                <section class="section-box">
+                    <h2 class="section-title">FILTROS</h2>
+                    <div class="filter-control">
+                        <div class="label-row">
+                            <span>Distancia</span>
+                            <span class="highlight-val" id="dist-val">5 km</span>
+                        </div>
+                        <input type="range" class="slider" min="1" max="20" value="5">
+                    </div>
+
+                    <div class="filter-control">
+                        <div class="label-row">
+                            <span>Precio</span>
+                            <span class="highlight-val">$ - $$$$</span>
+                        </div>
+                        <input type="range" class="slider" min="1" max="4" value="2">
+                    </div>
+
+                    <div class="toggle-control">
+                        <span>Abierto ahora</span>
+                        <input type="checkbox" checked>
+                    </div>
+
+                    <div class="toggle-control">
+                        <span>WiFi</span>
+                        <input type="checkbox" checked>
+                    </div>
+
+                    <button class="btn-apply">Aplicar filtros</button>
+                </section>
+            </aside>
+
+            <section class="center-stage">
+                <div class="map-wrapper">
+                    <div id="map"></div>
+                    <div class="map-overlay-tag">
+                        <span>🔍 Buscando en esta área</span>
+                    </div>
+                </div>
+
+                <div class="bottom-panels">
+                    <div class="ai-box">
+                        <div class="ai-header">
+                            <span class="ai-title">🤖 Asistente IA</span>
+                            <span class="badge-beta">BETA</span>
+                        </div>
+                        <div class="chat-bubble user-bubble">
+                            Tengo hambre, quiero jugar Mario Kart, no quiero gastar más de 40 mil, estoy con mi novia.
+                        </div>
+                        <div class="chat-bubble ai-bubble">
+                            ¡Entendido! Encontré 4 lugares perfectos para ti. Mi recomendación principal es <strong>Pixel Burger 🍔🎮</strong>.
+                        </div>
+                        <button class="btn-action">Ver recomendación en el mapa</button>
+                    </div>
+
+                    <div class="events-box">
+                        <div class="events-header">
+                            <h3>Eventos Cercanos</h3>
+                            <a href="#" class="link-all">Ver todos</a>
+                        </div>
+                        <div class="event-card">
+                            <div class="event-img">🏆</div>
+                            <div class="event-details">
+                                <h4>Torneo Smash Bros Ultimate</h4>
+                                <p>Hoy · 6:00 PM | Pixel Arena</p>
+                            </div>
+                        </div>
+                        <div class="event-card">
+                            <div class="event-img">♟️</div>
+                            <div class="event-details">
+                                <h4>Noche de Juegos de Mesa</h4>
+                                <p>Mañana · 7:00 PM | Coffee & Games</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="sidebar-right">
+                <div class="place-preview-card">
+                    <div class="place-hero">
+                        <div class="hero-tag">PIXEL BURGER</div>
+                    </div>
+                    <div class="place-body">
+                        <div class="place-title-row">
+                            <h2>Pixel Burger <span class="verified">✔</span></h2>
+                            <div class="rating">⭐ 4.9 <span>(350 reseñas)</span></div>
+                        </div>
+                        <p class="status"><span class="dot"></span> <strong>Abierto</strong> · Cierra a las 11:00 PM</p>
+                        <p class="distance">📍 1.3 km · 15 min</p>
+
+                        <div class="tags-container">
+                            <span class="tag">🍔 Hamburguesas</span>
+                            <span class="tag">🎮 Nintendo Switch</span>
+                            <span class="tag">🕹️ Arcade</span>
+                            <span class="tag">📶 WiFi</span>
+                            <span class="tag">🐶 Pet Friendly</span>
+                        </div>
+
+                        <p class="description">
+                            Restaurante temático gamer con burgers épicas, máquinas arcade y consolas para que juegues con tus amigos.
+                        </p>
+
+                        <div class="action-buttons">
+                            <button class="btn-primary">Cómo llegar</button>
+                            <button class="btn-secondary">🤍 Guardar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="user-stats-card">
+                    <h3>Explorer Geek</h3>
+                    <p class="user-lvl">Nivel 8</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%;"></div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <strong>52</strong>
+                            <span>Lugares visitados</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>14</strong>
+                            <span>Insignias</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>8</strong>
+                            <span>Listas creadas</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
