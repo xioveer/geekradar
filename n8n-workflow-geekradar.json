@@ -1,0 +1,183 @@
+{
+  "name": "GeekRadar - Geek Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "geek-assistant",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "1f1a2b3c-0001-4a1a-9c1a-000000000001",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        260,
+        300
+      ],
+      "webhookId": "geek-assistant"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "systemPrompt",
+              "type": "string",
+              "value": "Eres GeekRadar, un asistente experto y entusiasta en cultura geek: videojuegos, anime, cómics, ciencia ficción, tecnología y cultura pop. Respondes en español de forma clara, cercana y precisa, recomendando contenido, eventos o productos relevantes cuando aplica. Si no tienes información suficiente, lo dices honestamente en vez de inventar datos."
+            },
+            {
+              "id": "a2",
+              "name": "userMessage",
+              "type": "string",
+              "value": "={{ $json.body.mensaje || $json.body.pregunta || '' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1f1a2b3c-0002-4a1a-9c1a-000000000002",
+      "name": "Preparar Prompt",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: \"llama-3.3-70b-versatile\", messages: [ { role: \"system\", content: $json.systemPrompt }, { role: \"user\", content: $json.userMessage } ], temperature: 0.7 }) }}",
+        "options": {}
+      },
+      "id": "1f1a2b3c-0003-4a1a-9c1a-000000000003",
+      "name": "Groq",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        700,
+        300
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "groq-api-credential",
+          "name": "Groq API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b1",
+              "name": "respuesta",
+              "type": "string",
+              "value": "={{ $json.choices[0].message.content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1f1a2b3c-0004-4a1a-9c1a-000000000004",
+      "name": "Formatear Respuesta",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        920,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"respuesta\": $json.respuesta } }}",
+        "options": {}
+      },
+      "id": "1f1a2b3c-0005-4a1a-9c1a-000000000005",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        1140,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Preparar Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Prompt": {
+      "main": [
+        [
+          {
+            "node": "Groq",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq": {
+      "main": [
+        [
+          {
+            "node": "Formatear Respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatear Respuesta": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "00000000-0000-0000-0000-000000000000",
+  "meta": {
+    "instanceId": "geekradar-instance"
+  },
+  "tags": [
+    {
+      "name": "GeekRadar"
+    }
+  ]
+}
