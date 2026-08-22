@@ -1,49 +1,56 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GeekRadar — encuentra locales, eventos y comunidad geek cerca de ti.">
     <title>GeekRadar - Encuentra tu próximo parche</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-layout">
         <header class="top-nav">
             <div class="brand">
-                <div class="brand-icon">🎯</div>
+                <div class="brand-icon"><i data-lucide="radar"></i></div>
                 <div class="brand-text">
                     <h1>GeekRadar</h1>
                     <span>Encuentra tu próximo parche</span>
                 </div>
             </div>
-            
+
             <div class="search-container">
-                <span class="search-icon">🔍</span>
+                <i data-lucide="search"></i>
                 <input type="text" placeholder="¿Qué quieres hacer hoy?">
             </div>
 
             <nav class="nav-links">
-                <a href="#" class="nav-item active">🏠 Inicio</a>
-                <a href="#" class="nav-item">🧭 Explorar</a>
-                <a href="#" class="nav-item">📅 Eventos</a>
-                <a href="#" class="nav-item">👥 Comunidad</a>
-                <a href="#" class="nav-item">❤️ Favoritos</a>
+                <a href="#" class="nav-item active"><i data-lucide="home"></i> Inicio</a>
+                <a href="#" class="nav-item"><i data-lucide="compass"></i> Explorar</a>
+                <a href="#" class="nav-item"><i data-lucide="calendar"></i> Eventos</a>
+                <a href="#" class="nav-item"><i data-lucide="users"></i> Comunidad</a>
+                <a href="#" class="nav-item"><i data-lucide="heart"></i> Favoritos</a>
             </nav>
 
-            <div class="user-badge">
+            <button id="open-auth-btn" class="btn-auth">
+                <i data-lucide="log-in"></i> Ingresar
+            </button>
+
+            <div id="user-badge" class="user-badge is-hidden">
                 <div class="avatar">👦</div>
                 <div class="user-info">
                     <span class="level">Nivel 8</span>
                     <span class="role">Explorer Geek</span>
                     <span class="xp">1,250 XP</span>
                 </div>
+                <button id="logout-btn" class="logout-btn" title="Cerrar sesión">
+                    <i data-lucide="log-out"></i>
+                </button>
             </div>
         </header>
 
         <main class="main-content">
-            <aside class="sidebar-left">
+            <aside class="sidebar-left side-drawer" id="sidebar-left">
+                <button class="drawer-close" data-drawer-close><i data-lucide="x"></i></button>
+
                 <section class="section-box">
                     <h2 class="section-title">CATEGORÍAS</h2>
                     <ul class="category-menu">
@@ -96,7 +103,8 @@
                 <div class="map-wrapper">
                     <div id="map"></div>
                     <div class="map-overlay-tag">
-                        <span>🔍 Buscando en esta área</span>
+                        <i data-lucide="radar"></i>
+                        <span>Buscando en esta área</span>
                     </div>
                 </div>
 
@@ -106,13 +114,18 @@
                             <span class="ai-title">🤖 Asistente IA</span>
                             <span class="badge-beta">BETA</span>
                         </div>
-                        <div class="chat-bubble user-bubble">
-                            Tengo hambre, quiero jugar Mario Kart, no quiero gastar más de 40 mil, estoy con mi novia.
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="chat-bubble user-bubble">
+                                Tengo hambre, quiero jugar Mario Kart, no quiero gastar más de 40 mil, estoy con mi novia.
+                            </div>
+                            <div class="chat-bubble ai-bubble">
+                                ¡Entendido! Encontré 4 lugares perfectos para ti. Mi recomendación principal es <strong>Pixel Burger 🍔🎮</strong>.
+                            </div>
                         </div>
-                        <div class="chat-bubble ai-bubble">
-                            ¡Entendido! Encontré 4 lugares perfectos para ti. Mi recomendación principal es <strong>Pixel Burger 🍔🎮</strong>.
+                        <div class="chat-input-row">
+                            <input type="text" id="chat-input" class="chat-input" placeholder="Escribe tu mensaje...">
+                            <button id="chat-send" class="btn-action">Enviar</button>
                         </div>
-                        <button class="btn-action">Ver recomendación en el mapa</button>
                     </div>
 
                     <div class="events-box">
@@ -138,7 +151,9 @@
                 </div>
             </section>
 
-            <aside class="sidebar-right">
+            <aside class="sidebar-right side-drawer" id="sidebar-right">
+                <button class="drawer-close" data-drawer-close><i data-lucide="x"></i></button>
+
                 <div class="place-preview-card">
                     <div class="place-hero">
                         <div class="hero-tag">PIXEL BURGER</div>
@@ -193,9 +208,58 @@
                 </div>
             </aside>
         </main>
+
+        <nav class="bottom-nav">
+            <button class="bottom-nav-item active"><i data-lucide="home"></i> Inicio</button>
+            <button class="bottom-nav-item" data-drawer-target="#sidebar-left"><i data-lucide="sliders-horizontal"></i> Filtros</button>
+            <button class="bottom-nav-item"><i data-lucide="calendar"></i> Eventos</button>
+            <button class="bottom-nav-item" data-drawer-target="#sidebar-right"><i data-lucide="map-pin"></i> Lugar</button>
+            <button class="bottom-nav-item"><i data-lucide="user"></i> Perfil</button>
+        </nav>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="js/main.js"></script>
+    <!-- Modal de autenticación -->
+    <div id="auth-modal" class="modal-overlay is-hidden">
+        <div class="modal-panel">
+            <div class="modal-header">
+                <h2>Bienvenido a GeekRadar</h2>
+                <button class="modal-close" data-modal-close><i data-lucide="x"></i></button>
+            </div>
+
+            <form id="login-form" class="auth-form">
+                <label>
+                    Correo
+                    <input type="email" name="email" required autocomplete="email">
+                </label>
+                <label>
+                    Contraseña
+                    <input type="password" name="password" required autocomplete="current-password">
+                </label>
+                <p class="auth-feedback"></p>
+                <button type="submit">Iniciar sesión</button>
+                <p class="auth-switch">¿No tienes cuenta? <a href="#" id="switch-to-register">Regístrate</a></p>
+            </form>
+
+            <form id="register-form" class="auth-form is-hidden">
+                <label>
+                    Correo
+                    <input type="email" name="email" required autocomplete="email">
+                </label>
+                <label>
+                    Contraseña
+                    <input type="password" name="password" required minlength="6" autocomplete="new-password">
+                </label>
+                <p class="auth-feedback"></p>
+                <button type="submit">Crear cuenta</button>
+                <p class="auth-switch">¿Ya tienes cuenta? <a href="#" id="switch-to-login">Inicia sesión</a></p>
+            </form>
+
+            <p class="auth-demo-note">
+                Sin Supabase configurado, GeekRadar funciona en modo demo: la sesión se guarda solo en este navegador.
+            </p>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
 </body>
 </html>

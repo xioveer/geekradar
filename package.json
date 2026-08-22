@@ -1,0 +1,21 @@
+{
+  "name": "geekradar",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "GeekRadar — encuentra tu próximo parche geek.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "validate": "node scripts/loop-validator.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.112.3",
+    "gsap": "^3.15.0",
+    "lucide": "^1.33.0"
+  },
+  "devDependencies": {
+    "vite": "^8.2.1"
+  }
+}
